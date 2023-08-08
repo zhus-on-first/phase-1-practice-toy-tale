@@ -1,3 +1,51 @@
+// Define text characters for full and empty hearts
+const EMPTY_HEART = "♡";
+const FULL_HEART = "♥";
+
+// Fetch data
+fetch("http://localhost:3000/toys")
+  .then((response) => response.json())
+  .then((toys) => {
+    toys.forEach(renderToyCollection);
+  });
+
+// Call to render and populate the DOM:
+// <div class="card">
+//   <h2>Woody</h2>
+//   <img src="[toy_image_url]" class="toy-avatar" />
+//   <p>4 Likes</p>
+//   <button class="like-btn" id="[toy_id]">Like ❤️</button>
+// </div>
+
+function renderToyCollection(toy) {
+  //Do it by .appendChild(someTag) also?
+  const div = document.createElement("div");
+  div.className = "card";
+
+  const h2 = document.createElement("h2");
+  h2.textContent = toy.name;
+  div.append(h2);
+
+  const img = document.createElement("img");
+  img.src = toy.image;
+  img.alt = toy.name;
+  img.className = "toy-avatar";
+  div.append(img);
+
+  const p = document.createElement("p");
+  p.textContent = toy.likes;
+  div.append(p);
+
+  const btn = document.createElement("button");
+  btn.class = "like-btn";
+  btn.id = toy.id;
+  btn.textContent = "Like " + "EMPTY_HEART";
+  div.append(btn);
+
+  document.querySelector("#toy-collection").append(div);
+}
+
+// Event listener for add new toy form
 let addToy = false;
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -13,3 +61,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
+
+// //("submit", (e) => {
+// e.preventDefault();
+// }
