@@ -40,9 +40,40 @@ function renderToyCollection(toy) {
   const btn = document.createElement("button");
   btn.class = "like-btn";
   btn.id = toy.id;
-  btn.textContent = "Like " + "EMPTY_HEART";
+  btn.textContent = "Like";
   div.append(btn);
 
+  // add event listener to "like" button
+
+  btn.addEventListener("click", () => {
+    // Calculate new number of likes
+    const currentLikes = parseInt(p.textContent);
+    const newNumberOfLikes = currentLikes + 1;
+
+    // Update toy's likes using Patch
+    fetch(`http://localhost:3000/toys/${toy.id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify({ likes: newNumberOfLikes }),
+    })
+      .then((response) => response.json())
+      .then((updatedLikes) => {
+        // Update the DOM with new number of likes
+        p.textContent = newNumberOfLikes;
+      });
+  });
+
+  // const toyId = document.querySelector("btn.id").value;
+
+  // toyId.addEventListener("click", (e) => {
+  //   e.preventDefault();
+  // });
+  // patchJSON(`http://localhost:3000/toys/${toyId}`);
+
+  //Add toy to DOM
   document.querySelector("#toy-collection").append(div);
 }
 
@@ -63,7 +94,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-// Post: data persist events:
+// Post new toy
 // {
 //  "id": 1,
 //  "name": "Woody",
@@ -92,5 +123,3 @@ newToyForm.addEventListener("submit", (e) => {
     .then((response) => response.json())
     .then((toy) => renderToyCollection(toy));
 });
-
-// Increase like
