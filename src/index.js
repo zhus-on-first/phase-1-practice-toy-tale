@@ -20,6 +20,7 @@ fetch("http://localhost:3000/toys")
 function renderToyCollection(toy) {
   //Do it by .appendChild(someTag) also?
   const div = document.createElement("div");
+
   div.className = "card";
 
   const h2 = document.createElement("h2");
@@ -62,6 +63,34 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-// //("submit", (e) => {
-// e.preventDefault();
+// Post: data persist events:
+// {
+//  "id": 1,
+//  "name": "Woody",
+//  "image": "http://www.pngmart.com/files/3/Toy-Story-Woody-PNG-Photos.png",
+//  "likes": 5
 // }
+
+const newToyForm = document.querySelector(".add-toy-form");
+
+newToyForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+  //pull the info for the new toy out of the form submission
+  const toy = {
+    name: e.target.name.value,
+    image: e.target.image.value,
+    likes: "0",
+  };
+
+  fetch("http://localhost:3000/toys", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(toy),
+  })
+    .then((response) => response.json())
+    .then((toy) => renderToyCollection(toy));
+});
+
+// Increase like
